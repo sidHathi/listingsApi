@@ -1,15 +1,22 @@
-from pydantic import BaseModel, Field
-from uuid import UUID
+from pydantic import BaseModel, Field, json
+import uuid
 from datetime import datetime
+from .object_id import ObjectId
 
-from .mongo_location import MongoLocation
+from .db_location import DBLocation
+
+json.ENCODERS_BY_TYPE[ObjectId]=str
 
 class Listing(BaseModel):
-    _id: UUID = Field(description='object uuid')
+    id: ObjectId = Field(
+        default_factory=ObjectId, 
+        alias='_id', 
+        description='object id'
+    )
     url: str = Field(description='listing url')
     providerName: str = Field(description='name of provider website')
     name: str = Field(description='name of listing')
-    location: MongoLocation = Field(description='location object')
+    location: DBLocation = Field(description='location object')
     reType: str = Field(description='type of listing')
     bedrooms: list[int] = Field(description='range of bedrooms available in listing [min, max]')
     price: int = Field(description='price of listing in dollars')
@@ -17,3 +24,10 @@ class Listing(BaseModel):
     pets: bool = Field(description='are pets allowed in this listing')
     transit: bool = Field(description='is the listing close to transit?')
     scrapeTime: datetime
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True #required for the _id 
+        json_encoders = {
+            ObjectId: lambda v: str(v),
+        }
