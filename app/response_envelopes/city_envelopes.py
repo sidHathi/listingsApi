@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from .city_info import CityInfo
-from .meta import Meta
+from ..models.city_info import CityInfo
+from ..models.meta import Meta
 from ..enums.supported_city import SupportedCity
 
 class CityListEnvelope(BaseModel):

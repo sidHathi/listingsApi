@@ -5,8 +5,8 @@ from typing import Any
 from starlette.datastructures import MultiDict
 from fastapi import Request
 
-from .distance_range import DistanceRange
-from .geopoint import Geopoint
+from ..models.distance_range import DistanceRange
+from ..models.geopoint import Geopoint
 from ..constants import MILES_TO_METERS
 
 class SortingOptions(BaseModel):

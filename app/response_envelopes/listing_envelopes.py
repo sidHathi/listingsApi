@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from .listing import Listing
-from .meta import Meta
+from ..models.listing import Listing
+from ..models.meta import Meta
 
 class ListingEnvelope(BaseModel):
     data: Listing

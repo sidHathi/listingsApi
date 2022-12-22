@@ -8,8 +8,8 @@ from fastapi import Request
 from starlette.datastructures import MultiDict
 
 from .sorting_options import SortingOptions
-from .geopoint import Geopoint
-from .db_location import DBLocation
+from ..models.geopoint import Geopoint
+from ..models.db_location import DBLocation
 
 default_page_size=20
 

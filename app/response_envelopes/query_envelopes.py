@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from .scrape_query import ScrapeQueryResp
-from .meta import Meta
+from ..models.scrape_query import ScrapeQueryResp
+from ..models.meta import Meta
 
 class QueryListEnvelope(BaseModel):
     data: list[ScrapeQueryResp]
