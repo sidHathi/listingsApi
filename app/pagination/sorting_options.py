@@ -10,6 +10,11 @@ from models.geopoint import Geopoint
 from constants import MILES_TO_METERS
 
 class SortingOptions(BaseModel):
+    '''
+    Model that contains the sorting fields/ordering for list results.
+    Customizations are included to enable geographic sorting
+    '''
+
     fieldName: str = Field(description='name of field to sort')
     order: int = Field(description='sorting order: 1 for ascending, -1 for descending', default=1)
     startVal: Any = Field(
@@ -22,11 +27,15 @@ class SortingOptions(BaseModel):
         default=None
     )
 
+
+    # builds a sort dictionary for use in a mongo query
     def to_mongo_sort(self) -> Union[dict[str, Any], None]:
         if self.fieldName == 'distance':
             return None
         return { '_id': 1, self.fieldName: self.order }
     
+
+    # builds a bounded location query
     def to_location_query(self) -> Union[dict[str, Any], None]:
         if self.fieldName != 'distance' or self.distanceRange is None:
             return None
@@ -45,12 +54,15 @@ class SortingOptions(BaseModel):
 
         return query
 
+
     @validator('order')
     def validate_order(cls, v):
         if v is not None and v not in [1, -1]:
             raise ValueError('must be in [-1, 1]')
         return v
 
+
+    # constructs an instance from the request's query params
     @classmethod
     def from_request(cls, request: Request) -> Union[SortingOptions, None]:
         query_params: MultiDict = MultiDict(request.query_params)

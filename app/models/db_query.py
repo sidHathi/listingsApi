@@ -4,6 +4,10 @@ from typing import Any, Union
 from models.geoarea import Geoarea
 
 class DBQuery(BaseModel):
+    '''
+    Defines the fields used to query scraped data
+    '''
+    
     provider: Union[str, None] = Field(
         description='Listing provider name', 
         default=None

@@ -6,6 +6,9 @@ from geopy.extra.rate_limiter import RateLimiter
 from typing import cast, Union
 
 class DBLocation(BaseModel):
+    '''
+    data format used by the scraper to store location info
+    '''
     lat: float = Field(description='latitude')
     long: float = Field(description='longitude')
     address: str = Field(description='address string')

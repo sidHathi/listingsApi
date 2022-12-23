@@ -1,6 +1,12 @@
 from enum import Enum
 
+
 class SupportedCity(str, Enum):
+    '''
+    This enum defines the list of cities that the service currently
+    will provides listing data for
+    '''
+    
     boston = 'Boston, MA'
     newYork = 'New York City, NY'
     seattle = 'seattle'

@@ -5,7 +5,9 @@ from models.city_info import CityInfo
 from services.city_service import CityService
 from models.error import Error
 
+
 router = APIRouter()
+
 
 @router.get(
     '/',
@@ -19,6 +21,7 @@ def get_cities_list(request: Request):
 
     cities_list: list[str] = city_service.get_cities_list()
     return CityListEnvelope(data=cities_list)
+
 
 @router.get(
     '/detail',

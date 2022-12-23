@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from pymongo import MongoClient
 from pymongo.database import Database
+from dotenv import load_dotenv
 
 from controllers.listing_controller import router as listings_router
 from controllers.city_controller import router as cities_router
@@ -8,14 +9,17 @@ from controllers.query_controller import router as queries_router
 from services.services import Services
 from config import Settings
 
-app = FastAPI()
 
+load_dotenv()
+app = FastAPI()
 settings = Settings()
+
 
 def check_env():
     assert settings.atlas_uri is not None
     assert settings.db_name is not None
     assert settings.listings_collection_name is not None
+
 
 @app.on_event('startup')
 def startup_db_client():
@@ -28,9 +32,11 @@ def startup_db_client():
 
     app.services: Services = Services(app.database, settings)
 
+
 @app.on_event('shutdown')
 def shutdown_db_client():
     app.mongodb_client.close()
+
 
 @app.middleware("http")
 def manage_context(request: Request, call_next: callable):
@@ -39,14 +45,23 @@ def manage_context(request: Request, call_next: callable):
 
     return call_next(request)
 
+
 @app.get('/')
 def hello_world():
     return {"message": "hello world"}
 
-@app.get('/ip')
-def get_client(request: Request):
-    return request.client
 
 app.include_router(listings_router, prefix='/listings')
 app.include_router(cities_router, prefix='/cities')
 app.include_router(queries_router, prefix='/queries')
+
+
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8765,
+        log_level="debug",
+        reload=True,
+    )

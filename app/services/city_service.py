@@ -26,7 +26,7 @@ class CityService:
         if city == SupportedCity.sanFran:
             return 100
 
-        # unsupported in python 3.9
+        # unsupported in python <3.10 tragically
         # match(city):
         #     case SupportedCity.boston:
         #         return 60

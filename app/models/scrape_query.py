@@ -6,6 +6,10 @@ from models.object_id import ObjectId
 from models.db_location import DBLocation
 
 class ScrapeQuery(BaseModel):
+    '''
+    Contains the fields used by the scraper to scrape for queries
+    '''
+
     name: str = Field(
         description='name of new scraping query'
     )

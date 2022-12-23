@@ -18,6 +18,7 @@ config = dotenv_values('.env')
 
 router = APIRouter()
 
+
 @router.get(
     '/',
     response_model=ListingsEnvelope,

@@ -14,22 +14,31 @@ from models.db_location import DBLocation
 default_page_size=20
 
 class Cursor(BaseModel):
+    '''
+    This cursor implementation uses range indexed pagination.
+    This means that it sorts the results based on _ids and any user
+    specified fields, and paginates them by only returning data
+    indexed later in the sort order than the last member of the 
+    previous page. 
+    '''
+
     startId: Union[str, None]
-    previousIds: Union[list[str], None]
+    previousIds: Union[list[str], None] # used to prevent duplicates
     pageSize: int = default_page_size
     sorting_options: Union[SortingOptions, None]
 
-
+    # encodes the cursor as a base64 string
     def encode(self) -> str:
         return urlsafe_b64encode(dumps(self.dict()).encode())
     
-
+    # gets the next page's cursor from the current cursor
     def get_next_cursor(self, next_start: dict[str, Any], last_page_docs: list[BaseModel]) -> Cursor:
         new_sorting_opts: SortingOptions = self.sorting_options
         previous_ids: Union[list[str], None] = self.previousIds
         if previous_ids is None:
             previous_ids = []
         if self.sorting_options is not None:
+            # geographic queries require distance bounding
             if self.sorting_options.fieldName == 'distance' and self.sorting_options.distanceRange is not None:
                 point: Geopoint = self.sorting_options.distanceRange.point
                 last_location: dict[str, Any] = next_start['location']
@@ -52,12 +61,14 @@ class Cursor(BaseModel):
         )
     
 
+    # builds a cursor from an encoded string
     @classmethod
     def decode(cls, encoded: str) -> Cursor:
         data: dict[str, Any] = loads(urlsafe_b64decode(encoded).decode())
         return cls.parse_obj(data)
     
 
+    # builds a cursor from the request's query params
     @classmethod
     def from_request(cls, request: Request) -> Cursor:
         query_params: MultiDict = MultiDict(request.query_params)

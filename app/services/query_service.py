@@ -12,6 +12,7 @@ class QueryService:
     def __init__(self, db: Database, col_name: str):
         self.query_col: Collection = db[col_name]
 
+
     def get_all_queries(self, cursor: Cursor) -> list[ScrapeQueryResp]:
         filters: dict[str, Any] = {}
         start: Union[str, None] = cursor.startId
@@ -26,6 +27,7 @@ class QueryService:
         ))
 
         return queries
+
 
     def get_one_query(self, id: str) -> ScrapeQueryResp:
         if not ObjectId.is_valid(id):
@@ -45,6 +47,7 @@ class QueryService:
             )
 
         return query
+
 
     def create_new_query(self, new_query: ScrapeQuery) -> ScrapeQueryResp:
         insertion_doc: dict[str, Any] = new_query.to_insertion_doc()
