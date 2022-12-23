@@ -1,9 +1,9 @@
 from pydantic import BaseModel, Field
 from typing import Any
 
-from .db_location import DBLocation
-from .object_id import ObjectId
-from .db_location import DBLocation
+from models.db_location import DBLocation
+from models.object_id import ObjectId
+from models.db_location import DBLocation
 
 class ScrapeQuery(BaseModel):
     name: str = Field(

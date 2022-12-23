@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 from geopy.distance import great_circle
-from ..constants import MILES_TO_METERS
+
+from constants import MILES_TO_METERS
 
 class Geopoint(BaseModel):
     lat: float =  Field(description='latitude')

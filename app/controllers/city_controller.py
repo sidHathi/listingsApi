@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Request, Path
 
-from ..models.city_envelopes import CitiesDetailEnvelope, CityListEnvelope, CityDetailEnvelope
-from ..models.city_info import CityInfo
-from ..services.city_service import CityService
-from ..models.error import Error
+from response_envelopes.city_envelopes import CitiesDetailEnvelope, CityListEnvelope, CityDetailEnvelope
+from models.city_info import CityInfo
+from services.city_service import CityService
+from models.error import Error
 
 router = APIRouter()
 

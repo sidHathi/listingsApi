@@ -1,48 +1,48 @@
 from pydantic import BaseModel, Field
-from typing import Any
+from typing import Any, Union
 
-from .geoarea import Geoarea
+from models.geoarea import Geoarea
 
 class DBQuery(BaseModel):
-    provider: str | None = Field(
+    provider: Union[str, None] = Field(
         description='Listing provider name', 
         default=None
     )
-    name: str | None = Field(
+    name: Union[str, None] = Field(
         description='Search string - matched against listing names',
         default=None
     )
-    location: Geoarea | None = Field(
+    location: Union[Geoarea, None] = Field(
         description='Geographic area within which to search for listings',
         default=None
     )
-    reType: str | None = Field(
+    reType: Union[str, None] = Field(
         description='type of listing',
         example='apartment',
         default=None
     )
-    bedrooms: int | None = Field(
+    bedrooms: Union[int, None] = Field(
         description='number of bedrooms desired in listing',
         default=None
     )
-    price: list[int] | None = Field(
+    price: Union[list[int], None] = Field(
         description='[Min, max] price range',
         default=None
     )
-    leaseTerm: int | None = Field(
+    leaseTerm: Union[int, None] = Field(
         description='desired lease term',
         default=None
     )
-    pets: bool | None = Field(
+    pets: Union[bool, None] = Field(
         description='only get leasings that allow pets',
         default=None
     )
-    transit: bool | None = Field(
+    transit: Union[bool, None] = Field(
         description='only get listings close to transit',
         default=None
     )
 
-    def to_filter_dict(self, overrides: dict[str, Any] | None = None) -> dict[str, Any]:
+    def to_filter_dict(self, overrides: Union[dict[str, Any], None] = None) -> dict[str, Any]:
         query_dict: dict[str, Any] = {}
 
         if self.provider is not None:

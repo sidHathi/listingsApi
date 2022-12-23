@@ -1,7 +1,8 @@
 from pydantic import BaseModel
+from typing import Union
 
-from .geoarea import Geoarea
+from models.geoarea import Geoarea
 
 class CityInfo(BaseModel):
-    area: Geoarea | None
+    area: Union[Geoarea, None]
     subdivisions: dict[str, Geoarea]

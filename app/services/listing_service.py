@@ -1,22 +1,20 @@
-from dotenv import dotenv_values
 from pymongo.database import Database
 from pymongo.collection import Collection
 from fastapi import HTTPException
-from typing import Any
+from typing import Any, Union
 
-from ..models.listing import Listing
-from ..models.object_id import ObjectId
-from ..models.db_query import DBQuery
-from ..models.cursor import Cursor
-from ..models.sorting_options import SortingOptions
+from models.listing import Listing
+from models.object_id import ObjectId
+from models.db_query import DBQuery
+from pagination.cursor import Cursor
+from pagination.sorting_options import SortingOptions
 
-config = dotenv_values('.env')
 
 class ListingService:
-    def __init__(self, db: Database) -> None:
-        self.listings_col: Collection = db[config['LISTINGS_COLLECTION_NAME']]
+    def __init__(self, db: Database, col_name: str) -> None:
+        self.listings_col: Collection = db[col_name]
 
-    def _query_by_distance(self, cursor: Cursor, query: DBQuery | None) -> list[Listing]:
+    def _query_by_distance(self, cursor: Cursor, query: Union[DBQuery, None]) -> list[Listing]:
         if cursor.sorting_options is None or cursor.sorting_options.distanceRange is None:
             return []
         
@@ -35,8 +33,8 @@ class ListingService:
         ))
         return listings
     
-    def _query_by_field(self, cursor: Cursor, query: DBQuery | None) -> list[Listing]:
-        start: str | None = cursor.startId
+    def _query_by_field(self, cursor: Cursor, query: Union[DBQuery, None]) -> list[Listing]:
+        start: Union[str, None] = cursor.startId
         page_size: int = cursor.pageSize
         query_dict: dict[str, Any] = {}
         if query is not None:

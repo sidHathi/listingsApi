@@ -3,15 +3,15 @@ from dotenv import dotenv_values
 from uuid import UUID
 from pymongo.database import Database
 from pymongo.collection import Collection
-from typing import Any
+from typing import Any, Union
 
-from ..models.listing_envelopes import ListingEnvelope, ListingsEnvelope
-from ..models.listing import Listing
-from ..models.error import Error
-from ..models.db_query import DBQuery
-from ..models.cursor import default_page_size, Cursor
-from ..models.meta import Meta
-from ..services.listing_service import ListingService
+from response_envelopes.listing_envelopes import ListingEnvelope, ListingsEnvelope
+from models.listing import Listing
+from models.error import Error
+from models.db_query import DBQuery
+from pagination.cursor import default_page_size, Cursor
+from models.meta import Meta
+from services.listing_service import ListingService
 
 
 config = dotenv_values('.env')
@@ -72,7 +72,7 @@ def get_one_listing(request: Request, id: str = Path()):
 def search_listings(
     request: Request,
     query: DBQuery = Body(),
-    cursor: str | None = Query(
+    cursor: Union[str, None] = Query(
         description='pagination cursor (absence indicates first page)',
         default=None
     )

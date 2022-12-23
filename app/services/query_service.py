@@ -1,23 +1,20 @@
 from pymongo.database import Database
 from pymongo.collection import Collection
 from pymongo.results import UpdateResult, InsertOneResult
-from dotenv import dotenv_values
 from fastapi import HTTPException
-from typing import Any
+from typing import Any, Union
 
-from ..models.scrape_query import ScrapeQuery, ScrapeQueryResp
-from ..models.object_id import ObjectId
-from ..models.cursor import Cursor
-
-config = dotenv_values('.env')
+from models.scrape_query import ScrapeQuery, ScrapeQueryResp
+from models.object_id import ObjectId
+from pagination.cursor import Cursor
 
 class QueryService:
-    def __init__(self, db: Database):
-        self.query_col: Collection = db[config['QUERIES_COLLECTION_NAME']]
+    def __init__(self, db: Database, col_name: str):
+        self.query_col: Collection = db[col_name]
 
     def get_all_queries(self, cursor: Cursor) -> list[ScrapeQueryResp]:
         filters: dict[str, Any] = {}
-        start: str | None = cursor.startId
+        start: Union[str, None] = cursor.startId
         page_size: int = cursor.pageSize
         if start is not None and ObjectId.is_valid(start):
             start_id: ObjectId = ObjectId(start)

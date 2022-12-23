@@ -6,9 +6,9 @@ from geopy import Location
 from geopy.extra.rate_limiter import RateLimiter
 from geopy.exc import GeocoderTimedOut, GeocoderUnavailable, GeocoderServiceError, GeocoderParseError
 
-from ..models.geoarea import Geoarea
-from ..models.city_info import CityInfo
-from ..enums.supported_city import SupportedCity
+from models.geoarea import Geoarea
+from models.city_info import CityInfo
+from enums.supported_city import SupportedCity
 
 class CityService:
     def get_cities_list(self) -> list[str]:
@@ -16,15 +16,26 @@ class CityService:
 
     def get_city_radius(self, city: SupportedCity) -> float:
         # returns square mileage of city in miles
-        match(city):
-            case SupportedCity.boston:
-                return 60
-            case SupportedCity.newYork:
-                return 120
-            case SupportedCity.seattle:
-                return 80
-            case SupportedCity.sanFran:
-                return 100
+
+        if city == SupportedCity.boston:
+            return 60
+        if city == SupportedCity.newYork:
+            return 120
+        if city == SupportedCity.seattle:
+            return 80
+        if city == SupportedCity.sanFran:
+            return 100
+
+        # unsupported in python 3.9
+        # match(city):
+        #     case SupportedCity.boston:
+        #         return 60
+        #     case SupportedCity.newYork:
+        #         return 120
+        #     case SupportedCity.seattle:
+        #         return 80
+        #     case SupportedCity.sanFran:
+        #         return 100
 
     def get_cities_detail(self) -> dict[str: CityInfo]:
         cityAreas: dict[SupportedCity, Geoarea] = {}

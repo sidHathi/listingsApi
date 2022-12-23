@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Any
 
-from ..constants import EARTH_RADIUS
+from constants import EARTH_RADIUS
 
 class Geoarea(BaseModel):
     lat: float

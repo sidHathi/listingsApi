@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Path, Body, Request, Query
 
-from ..services.query_service import QueryService
-from ..models.scrape_query import ScrapeQuery, ScrapeQueryResp
-from ..models.query_envelopes import QueryEnvelope, QueryListEnvelope
-from ..models.error import Error
-from ..models.meta import Meta
-from ..models.cursor import default_page_size, Cursor
+from services.query_service import QueryService
+from models.scrape_query import ScrapeQuery, ScrapeQueryResp
+from response_envelopes.query_envelopes import QueryEnvelope, QueryListEnvelope
+from models.error import Error
+from models.meta import Meta
+from pagination.cursor import default_page_size, Cursor
 
 
 router = APIRouter()
