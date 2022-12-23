@@ -2,7 +2,7 @@ from pymongo.database import Database
 from pymongo.collection import Collection
 from pymongo.results import UpdateResult, InsertOneResult
 from fastapi import HTTPException
-from typing import Any, Union
+from typing import Any, Optional
 
 from models.scrape_query import ScrapeQuery, ScrapeQueryResp
 from models.object_id import ObjectId
@@ -15,7 +15,7 @@ class QueryService:
 
     def get_all_queries(self, cursor: Cursor) -> list[ScrapeQueryResp]:
         filters: dict[str, Any] = {}
-        start: Union[str, None] = cursor.startId
+        start: Optional[str] = cursor.startId
         page_size: int = cursor.pageSize
         if start is not None and ObjectId.is_valid(start):
             start_id: ObjectId = ObjectId(start)
@@ -82,5 +82,5 @@ class QueryService:
         elif res.matched_count < 1:
             raise HTTPException(status_code=404, detail='No queries matching id')
 
-        return ScrapeQueryResp.parse_obj(res.raw_result)
+        return ScrapeQueryResp.parse_obj(update_doc['$set'])
 

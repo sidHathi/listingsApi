@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 from uuid import UUID
 from pymongo.database import Database
 from pymongo.collection import Collection
-from typing import Any, Union
+from typing import Any, Optional
 
 from response_envelopes.listing_envelopes import ListingEnvelope, ListingsEnvelope
 from models.listing import Listing
@@ -73,7 +73,7 @@ def get_one_listing(request: Request, id: str = Path()):
 def search_listings(
     request: Request,
     query: DBQuery = Body(),
-    cursor: Union[str, None] = Query(
+    cursor: Optional[str] = Query(
         description='pagination cursor (absence indicates first page)',
         default=None
     )

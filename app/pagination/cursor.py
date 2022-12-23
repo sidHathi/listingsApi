@@ -3,7 +3,7 @@ from __future__ import annotations
 from pydantic import BaseModel
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from json import dumps, loads
-from typing import Any, Union
+from typing import Any, Optional
 from fastapi import Request
 from starlette.datastructures import MultiDict
 
@@ -22,10 +22,10 @@ class Cursor(BaseModel):
     previous page. 
     '''
 
-    startId: Union[str, None]
-    previousIds: Union[list[str], None] # used to prevent duplicates
+    startId: Optional[str]
+    previousIds: Optional[list[str]] # used to prevent duplicates
     pageSize: int = default_page_size
-    sorting_options: Union[SortingOptions, None]
+    sorting_options: Optional[SortingOptions]
 
     # encodes the cursor as a base64 string
     def encode(self) -> str:
@@ -34,7 +34,7 @@ class Cursor(BaseModel):
     # gets the next page's cursor from the current cursor
     def get_next_cursor(self, next_start: dict[str, Any], last_page_docs: list[BaseModel]) -> Cursor:
         new_sorting_opts: SortingOptions = self.sorting_options
-        previous_ids: Union[list[str], None] = self.previousIds
+        previous_ids: Optional[list[str]] = self.previousIds
         if previous_ids is None:
             previous_ids = []
         if self.sorting_options is not None:
@@ -72,9 +72,9 @@ class Cursor(BaseModel):
     @classmethod
     def from_request(cls, request: Request) -> Cursor:
         query_params: MultiDict = MultiDict(request.query_params)
-        query_cursor: Union[str, None] = query_params.pop('cursor')
-        page_size_override: Union[str, None] = query_params.pop('pageSize')
-        sort_key: Union[str, None] = query_params.pop('sortBy')
+        query_cursor: Optional[str] = query_params.pop('cursor')
+        page_size_override: Optional[str] = query_params.pop('pageSize')
+        sort_key: Optional[str] = query_params.pop('sortBy')
 
         cursor: Cursor = cls(startId=None, pageSize=default_page_size)
         if query_cursor is not None:

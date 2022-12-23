@@ -3,7 +3,7 @@ from geopy.exc import GeocoderTimedOut, GeocoderUnavailable, GeocoderServiceErro
 from geopy.geocoders import Nominatim
 from geopy import Location
 from geopy.extra.rate_limiter import RateLimiter
-from typing import cast, Union
+from typing import cast, Optional
 
 class DBLocation(BaseModel):
     '''
@@ -13,11 +13,11 @@ class DBLocation(BaseModel):
     long: float = Field(description='longitude')
     address: str = Field(description='address string')
 
-    def to_geopy(self) -> Union[Location, None]:
+    def to_geopy(self) -> Optional[Location]:
         try:
             geocoder = Nominatim(user_agent='listings_api')
-            geocode = RateLimiter(geocoder.geocode, min_delay_seconds=1, return_value_on_exception=None)
-            location = geocode.reverse((self.lat, self.long))
+            geocode = RateLimiter(geocoder.reverse, min_delay_seconds=1, return_value_on_exception=None)
+            location = geocode((self.lat, self.long))
             if location is None:
                 return None
             else:

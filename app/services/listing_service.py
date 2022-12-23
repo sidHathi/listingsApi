@@ -1,7 +1,7 @@
 from pymongo.database import Database
 from pymongo.collection import Collection
 from fastapi import HTTPException
-from typing import Any, Union
+from typing import Any, Optional
 
 from models.listing import Listing
 from models.object_id import ObjectId
@@ -16,7 +16,7 @@ class ListingService:
 
 
     # custom query pattern for distance-sorted queries
-    def _query_by_distance(self, cursor: Cursor, query: Union[DBQuery, None]) -> list[Listing]:
+    def _query_by_distance(self, cursor: Cursor, query: Optional[DBQuery]) -> list[Listing]:
         if cursor.sorting_options is None or cursor.sorting_options.distanceRange is None:
             return []
         
@@ -41,8 +41,8 @@ class ListingService:
     
 
     # normal query pattern
-    def _query_by_field(self, cursor: Cursor, query: Union[DBQuery, None]) -> list[Listing]:
-        start: Union[str, None] = cursor.startId
+    def _query_by_field(self, cursor: Cursor, query: Optional[DBQuery]) -> list[Listing]:
+        start: Optional[str] = cursor.startId
         page_size: int = cursor.pageSize
         query_dict: dict[str, Any] = {}
         if query is not None:
@@ -72,6 +72,7 @@ class ListingService:
                 else:
                     query_dict[fieldName]['$gte'] = startVal
 
+        print(query_dict)
         listings: list[Listing] = list(map(
             Listing.parse_obj, 
             self.listings_col.find(query_dict).sort(sort_fields).limit(page_size + 1)

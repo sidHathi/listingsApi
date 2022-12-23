@@ -1,13 +1,13 @@
 from pydantic import BaseModel
-from typing import Union
+from typing import Optional
 
 from models.listing import Listing
 from models.meta import Meta
 
 class ListingEnvelope(BaseModel):
     data: Listing
-    meta: Union[Meta, None]
+    meta: Optional[Meta]
 
 class ListingsEnvelope(BaseModel):
     data: list[Listing]
-    meta: Union[Meta, None]
+    meta: Optional[Meta]

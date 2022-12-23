@@ -45,6 +45,7 @@ class ScrapeQuery(BaseModel):
             leaseTerm= 'shortTerm'
 
         insertion_doc['leaseTerm'] = leaseTerm
+        insertion_doc['location'] = self.location.to_geopy().address
         return insertion_doc
 
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pydantic import BaseModel, Field, validator
-from typing import Any, Union
+from typing import Any, Optional
 from starlette.datastructures import MultiDict
 from fastapi import Request
 
@@ -22,21 +22,21 @@ class SortingOptions(BaseModel):
         default=None
     )
     # for location/distance based sorting
-    distanceRange: Union[DistanceRange, None] = Field(
+    distanceRange: Optional[DistanceRange] = Field(
         description='for location sorting - point from which to measure distance along with range bound for search',
         default=None
     )
 
 
     # builds a sort dictionary for use in a mongo query
-    def to_mongo_sort(self) -> Union[dict[str, Any], None]:
+    def to_mongo_sort(self) -> Optional[dict[str, Any]]:
         if self.fieldName == 'distance':
             return None
         return { '_id': 1, self.fieldName: self.order }
     
 
     # builds a bounded location query
-    def to_location_query(self) -> Union[dict[str, Any], None]:
+    def to_location_query(self) -> Optional[dict[str, Any]]:
         if self.fieldName != 'distance' or self.distanceRange is None:
             return None
         
@@ -64,13 +64,13 @@ class SortingOptions(BaseModel):
 
     # constructs an instance from the request's query params
     @classmethod
-    def from_request(cls, request: Request) -> Union[SortingOptions, None]:
+    def from_request(cls, request: Request) -> Optional[SortingOptions]:
         query_params: MultiDict = MultiDict(request.query_params)
-        sort_by: Union[str, None] = query_params.pop('sortBy')
-        order: Union[int, None] = query_params.pop('order')
-        nearest_point_lat: Union[float, None] = query_params.pop('distanceFromLat')
-        nearest_point_long: Union[float, None] = query_params.pop('distanceFromLong')
-        max_distance: Union[float, None] = query_params.pop('maxDistance')
+        sort_by: Optional[str] = query_params.pop('sortBy')
+        order: Optional[int] = query_params.pop('order')
+        nearest_point_lat: Optional[float] = query_params.pop('distanceFromLat')
+        nearest_point_long: Optional[float] = query_params.pop('distanceFromLong')
+        max_distance: Optional[float] = query_params.pop('maxDistance')
 
         opts: dict[str, Any] = {}
         if sort_by is None:
