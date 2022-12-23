@@ -50,7 +50,7 @@ class DBQuery(BaseModel):
         query_dict: dict[str, Any] = {}
 
         if self.providerName is not None:
-            query_dict['providerName'] = self.provider
+            query_dict['providerName'] = self.providerName
         if self.name is not None:
             query_dict['name'] = self.name
         if self.location is not None:
