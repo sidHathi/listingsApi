@@ -9,7 +9,7 @@ class SupportedCity(str, Enum):
     
     boston = 'Boston, MA'
     newYork = 'New York City, NY'
-    seattle = 'seattle'
+    seattle = 'Seattle, WA'
     # losAngeles = 'Los Angeles, CA'
     sanFran = 'San Francisco, CA'
     # sanJose = 'San Jose, CA'

@@ -8,6 +8,6 @@ class CityInfo(BaseModel):
     Defines a city using a geographic region and a name indexed 
     dictionary of subdivisions/neighborhoods within the city
     '''
-
-    area: Optional[Geoarea]
+    name: str
+    location: Optional[Geoarea]
     subdivisions: dict[str, Geoarea]

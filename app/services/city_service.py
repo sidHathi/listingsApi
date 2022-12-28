@@ -53,7 +53,7 @@ class CityService:
                 print('location parse failed')
                 print(e)
                 cityAreas[city] = None
-        citiesInfo: dict[str, CityInfo] = {}
+        citiesInfo: list[CityInfo] = []
         for city in SupportedCity:
-            citiesInfo[city.value] = CityInfo(area=cityAreas[city], subdivisions={})
+            citiesInfo.append(CityInfo(name=city.value, location=cityAreas[city], subdivisions={}))
         return citiesInfo

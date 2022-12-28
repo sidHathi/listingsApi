@@ -8,8 +8,8 @@ class DBQuery(BaseModel):
     Defines the fields used to query scraped data
     '''
     
-    providerName: Optional[str] = Field(
-        description='Listing provider name', 
+    providerNames: Optional[list[str]] = Field(
+        description='Listing provider names', 
         default=None
     )
     name: Optional[str] = Field(
@@ -49,8 +49,8 @@ class DBQuery(BaseModel):
     def to_filter_dict(self, overrides: Optional[dict[str, Any]] = None) -> dict[str, Any]:
         query_dict: dict[str, Any] = {}
 
-        if self.providerName is not None:
-            query_dict['providerName'] = self.providerName
+        if self.providerNames is not None:
+            query_dict['providerName'] = {'$in': self.providerNames}
         if self.name is not None:
             query_dict['name'] = self.name
         if self.location is not None:

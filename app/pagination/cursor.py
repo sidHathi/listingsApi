@@ -11,7 +11,7 @@ from pagination.sorting_options import SortingOptions
 from models.geopoint import Geopoint
 from models.db_location import DBLocation
 
-default_page_size=20
+default_page_size=24
 
 class Cursor(BaseModel):
     '''

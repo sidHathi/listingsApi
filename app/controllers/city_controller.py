@@ -33,5 +33,5 @@ def get_cities_list(request: Request):
 def get_cities_detail(request: Request):
     city_service: CityService = request.app.services.city_service
 
-    cities_detail: dict[str, CityInfo] = city_service.get_cities_detail()
+    cities_detail: list[CityInfo] = city_service.get_cities_detail()
     return CitiesDetailEnvelope(data=cities_detail)

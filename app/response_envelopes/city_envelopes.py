@@ -10,7 +10,7 @@ class CityListEnvelope(BaseModel):
     meta: Optional[Meta]
 
 class CitiesDetailEnvelope(BaseModel):
-    data: dict[str, CityInfo]
+    data: list[CityInfo]
     meta: Optional[Meta]
 
 class CityDetailEnvelope(BaseModel):
