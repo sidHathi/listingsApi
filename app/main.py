@@ -11,7 +11,6 @@ from controllers.query_controller import router as queries_router
 from services.services import Services
 from config import Settings
 
-
 load_dotenv()
 app = FastAPI()
 settings = Settings()
@@ -28,6 +27,7 @@ def check_env():
     assert settings.atlas_uri is not None
     assert settings.db_name is not None
     assert settings.listings_collection_name is not None
+    assert settings.google_maps_api_key is not None
 
 
 @app.on_event('startup')

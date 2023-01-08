@@ -41,14 +41,15 @@ class SortingOptions(BaseModel):
             return None
         
         center_point: Geopoint = self.distanceRange.point
+        print(self.distanceRange.maxDistance)
         query: dict[str, Any] =  {
             '$near': {
                 '$geometry': {
                     'type': 'Point',
                     'coordinates': [center_point.long, center_point.lat]
                 },
-                '$minDistance': self.distanceRange.minDistance * MILES_TO_METERS,
-                '$maxDistance': self.distanceRange.maxDistance * MILES_TO_METERS
+                '$minDistance': float(self.distanceRange.minDistance) * MILES_TO_METERS,
+                '$maxDistance': float(self.distanceRange.maxDistance) * MILES_TO_METERS
             }
         }
 

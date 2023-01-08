@@ -60,6 +60,7 @@ class ListingService:
             order: int = cursor.sorting_options.order
             fieldName: str = cursor.sorting_options.fieldName
             startVal = cursor.sorting_options.startVal
+            # print(startVal)
             sort_fields = [
                 (fieldName, order),
                 ('_id', 1)

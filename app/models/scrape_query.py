@@ -46,6 +46,7 @@ class ScrapeQuery(BaseModel):
 
         insertion_doc['leaseTerm'] = leaseTerm
         insertion_doc['location'] = self.location.to_geopy().address
+        insertion_doc['hasProxyPermission'] = False
         return insertion_doc
 
 
@@ -78,6 +79,9 @@ class ScrapeQueryResp(ScrapeQuery):
     )
     transit: bool = Field(
         description='scrape for listings near transit'
+    )
+    hasProxyPermission: bool = Field(
+        description='is this query important enough to merit scraping using proxy bandwidth'
     )
     
     class Config:

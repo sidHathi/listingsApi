@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, json
 import uuid
 from datetime import datetime
+from typing import Optional
 
 from models.object_id import ObjectId
 from models.db_location import DBLocation
@@ -24,6 +25,7 @@ class Listing(BaseModel):
     pets: bool = Field(description='are pets allowed in this listing')
     transit: bool = Field(description='is the listing close to transit?')
     scrapeTime: datetime
+    pageRank: Optional[int]= Field(description='How high up on the listing provider website did the listing appear', default=None)
 
     class Config:
         allow_population_by_field_name = True
